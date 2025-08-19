@@ -12,7 +12,9 @@ API integration between Medusa.js and Fishbowl ERP software
 ## Dependencies/prerequisites:
 - Full Medusa.js app
 - Axios installed as a dependency in the Medusa project
-- Fishbowl license and server install, server URL, login credentials, Medusa app manually approved in Fishbowl
+- Fishbowl server install, server URL and login credentials, and the Medusa app that will make requests manually approved in Fishbowl
+
+Note: these relevant folders have simply been extricated from a much larger ecommerce monorepo, so it is not a package or plugin yet, but I plan to turn it into one
 
 ## API Reference
 
@@ -60,4 +62,4 @@ module.exports = defineConfig({
 - I am begrudgingly using their endpoint that takes raw SQL as a query parameter for product/inventory sync to circumvent that. The queries are hardcoded on the Medusa backend & no user input which minimizes risk
 - Fishbowl licensing comes with a concurrent user login limit per license - any API call made when the logged-in user limit is already at max will fail (see below section)
 - Related to above, a task using the API must log out promptly after its job has completed (or failed) so that actual people working will not be blocked from logging into the client software (see below section)
-- For those reasons, if any other scheduled tasks are added, they should run outside 9-5 hours if possible
+- For those reasons, if any other scheduled tasks are added, they should run outside of business hours if possible
