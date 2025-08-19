@@ -16,7 +16,7 @@ API integration between Medusa.js and Fishbowl ERP software
 - Axios installed as a dependency in the Medusa project
 - Fishbowl server install, server URL and login credentials, and manually approving the Medusa "app" in Fishbowl
 
-Note: This is not yet a package or plugin, but I plan to turn it into one once it is more fully featured
+Note: This is not yet a package or plugin, it is a combination of a Medusa module, workflows, scheduled jobs, and subscribers
 
 ## API Reference
 
