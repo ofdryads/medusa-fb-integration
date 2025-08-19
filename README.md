@@ -7,7 +7,7 @@ API integration between Medusa.js and Fishbowl ERP software
 - Orders (Medusa -> FB) (work in progress)
 
 ### Soon to be added
-- Product categories that have been added as custom fields in the ERP automatically sync and map to Medusa/website categories. Product categories are not natively supported by this ERP.
+- Product categories that have been added as custom fields in the ERP automatically sync and map to Medusa/website categories (product categories are not natively supported by this ERP)
 
 ## Dependencies/prerequisites:
 - Full Medusa.js app
