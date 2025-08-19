@@ -1,5 +1,6 @@
 # Medusa.js + Fishbowl ERP E-commerce integration
 API integration between Medusa.js and Fishbowl ERP software
+*This project is not affiliated with either product*
 
 ## It syncs:
 - Product info (FB -> Medusa)
