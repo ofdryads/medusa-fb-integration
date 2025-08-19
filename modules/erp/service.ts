@@ -40,7 +40,7 @@ export default class ErpModuleService {
   private async auth(): Promise<void> {
     try {
       const res = await this.fbClient.post("/api/login", {
-        //auth details for user (admin)
+        //auth details for user
         username: this.options.username,
         password: this.options.password,
 
@@ -115,16 +115,8 @@ export default class ErpModuleService {
             JOIN partcost pc ON pt.id = pc.partId
             WHERE pt.num = pr.num
             AND pc.qty > 0
-          )
-          AND EXISTS (SELECT 1 FROM producttree WHERE id = 614)
-          AND NOT EXISTS (
-            SELECT 1 
-            FROM producttotree tree 
-            WHERE tree.productid = pr.id 
-            AND tree.producttreeid = 614
-        );
+          );
         `
-      
       const data = await this.dataQueryGetReq(query) //make the GET request to Fishbowl with above query
       return data
 
@@ -151,7 +143,7 @@ export default class ErpModuleService {
         GROUP BY pr.num, pc.partId;
       `
       
-      const data = await this.dataQueryGetReq(query) //make the GET request to Fishbowl using above query
+      const data = await this.dataQueryGetReq(query)
       return data
 
     } catch (error) {
@@ -160,39 +152,54 @@ export default class ErpModuleService {
     }
   }
 
-  async sendOrderToErp() {
+  // DRAFT FUNCTION
+  async sendOrderToErp(order) {
     try {
       if (!this.token) await this.auth()
 
       const res = await this.fbClient.post("/api/import/Sales-Order", {
-        /*[
-          [
-            "Flag", "SONum", "Status", "CustomerName", "CustomerContact", "BillToName", "BillToAddress",
-            "BillToCity", "BillToState", "BillToZip", "BillToCountry", "ShipToName", "ShipToAddress",
-            "ShipToCity", "ShipToState", "ShipToZip", "ShipToCountry", "ShipToResidential", "CarrierName",
-            "TaxRateName", "PriorityId", "Date", "CarrierService", "Phone", "Email"
-          ],
-          [
-            "Flag", "SOItemTypeID", "ProductNumber", "ProductQuantity", "UOM", "ProductPrice", "Taxable", "TaxCode", "Note",
-            "ItemDateScheduled"
-          ],
-          [
-            //customer data - example
-             "SO", "10783", "10", "Canyon Outfitters", "Liam Perez", "Canyon Outfitters", "982 River Rd",
-    "Boise", "ID", "83702", "UNITED STATES", "Canyon Outfitters", "982 River Rd", "Boise",
-    "ID", "83702", "UNITED STATES", "false", "UPS", "Cal Tax", "30", "06/28/2025", "Ground", "208-555-9981", "liam@canyonoutfitters.com", "Express"
-          ],
-          [
-            // product1
-          ],
-          [ //product2 etc....
-          ],
-        ]
-      */
+        // order
       })
     } catch (error) {
       console.error("Error sending order to Fishbowl: ", error);
       throw error
     }
   }
+
+  async deleteOrder(order) {
+    // delete order
+  }
 }
+
+/* Below is a reference of the format in which order data will need to be sent to the ERP
+it is CSV Data / 2D array 
+the values from [3] and beyond have product data corresponding to headers in [1]
+[2] data corresponds to [0] headers
+
+It needs a ton of mapping and processing to become like this and not trip Fishbowl's CSV data validation
+*/
+
+/*[
+  [
+    "Flag", "SONum", "Status", "CustomerName", "CustomerContact", "BillToName", "BillToAddress",
+    "BillToCity", "BillToState", "BillToZip", "BillToCountry", "ShipToName", "ShipToAddress",
+    "ShipToCity", "ShipToState", "ShipToZip", "ShipToCountry", "ShipToResidential", "CarrierName",
+    "TaxRateName", "PriorityId", "Date", "CarrierService", "Phone", "Email"
+  ],
+  [
+    "Flag", "SOItemTypeID", "ProductNumber", "ProductQuantity", "UOM", "ProductPrice", "Taxable", "TaxCode", "Note",
+    "ItemDateScheduled"
+  ],
+  [
+    //customer data - (EXAMPLE, FAKE)
+     "SO", "10783", "10", "Canyon Outfitters", "Firstname Lastname", "Canyon Outfitters", "982 River Rd",
+"Boise", "ID", "83702", "UNITED STATES", "Canyon Outfitters", "982 River Rd", "Boise",
+"ID", "83702", "UNITED STATES", "false", "UPS", "Cal Tax", "30", "06/28/2025", "Ground", "208-555-9981", "liam@canyonoutfitters.com", "Express"
+  ],
+  [
+    // product1
+  ],
+  [ //product2 etc....
+  ],
+]
+*/
