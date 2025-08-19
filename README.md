@@ -60,6 +60,6 @@ module.exports = defineConfig({
     - So as of right now summer 2025, have to use POST /api/import/Sales-Order (the CSV method) for this
 - The api/export CSV endpoints do not accept query parameters - it's just a CSV dump that would need to be converted to actual JSON from a 2d array and then filtered/transformed extensively after payload is received, using our compute not FB server's. # of rows for product/part are in the tens of thousands.
 - I am begrudgingly using their endpoint that takes raw SQL as a query parameter for product/inventory sync to circumvent that. The queries are hardcoded on the Medusa backend & no user input which minimizes risk
-- Fishbowl licensing comes with a concurrent user login limit per license - any API call made when the logged-in user limit is already at max will fail (see below section)
+- Fishbowl licensing comes with a concurrent user login limit per license - any API call made when the logged-in user limit is already at max will fail 
 - Related to above, a task using the API must log out promptly after its job has completed (or failed) so that actual people working will not be blocked from logging into the client software (see below section)
 - For those reasons, if any other scheduled tasks are added, they should run outside of business hours if possible
